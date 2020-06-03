@@ -1,8 +1,9 @@
 <?php
 require 'admin_functions.php';
-require '../classes/orderService.php';
-$OrderService = new orderService();
-$orders = $OrderService->getOrdersList();
+require '../classes/ProductService.php';
+require '../classes/Pagination.php';
+$ProductService = new ProductService();
+$service = $ProductService->getProductList();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -245,33 +246,36 @@ $orders = $OrderService->getOrdersList();
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>id Заказа</th>
-                                    <th>Название книг</th>
-                                    <th>Дата заказа</th>
-                                    <th>Статус</th>
-                                    <th>Сумма к оплате</th>
+                                    <th>ID товара</th>
+                                    <th>Название</th>
+                                    <th>Стоимость</th>
+                                    <th>Автор</th>
+                                    <th>Жанр</th>
+                                    <th>Действия</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <th>id Заказа</th>
-                                    <th>Название книг</th>
-                                    <th>Дата заказа</th>
-                                    <th>Статус</th>
-                                    <th>Сумма к оплате</th>
+                                    <th>ID товара</th>
+                                    <th>Название</th>
+                                    <th>Стоимость</th>
+                                    <th>Автор</th>
+                                    <th>Жанр</th>
+                                    <th>Действия</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <?php foreach ($orders as $order): ?>
-                                    <tr>
-                                        <td><?= $order['order_id'] ?></td>
-                                        <td><?php foreach ($OrderService->getBookIdByName($order['book_ids'], $order['book_names']) as $id => $book): ?>
-                                                <li><a href="../page.php?book_id=<?= $id ?>"><?= $book ?>
-                                                </li>
-                                            <?php endforeach; ?></td>
-                                        <td><?= $order['added_at'] ?></td>
-                                        <td><?= $order['status'] ?></td>
-                                        <td><?= $order['amount'] ?></td>
+                                        <?php $service = new ProductService();
+
+                                        ?>
+                                        <?php foreach ($service->getProductList() as $product) : ?>
+                                        <td><?= $product['book_id'] ?></td>
+                                        <td><?= $product['title'] ?></td>
+                                        <td><?= $product['cost'] ?></td>
+                                        <td><?= $product['author'] ?></td>
+                                        <td><?= $product['genre'] ?></td>
+                                        <td><a href="../admin/product_edit.php?book_id=<?=$product['book_id']?>">Редактировать</a><td><a href="/admin/product_delete.php">Удалить</a></td>
+
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>

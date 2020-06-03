@@ -1,5 +1,23 @@
 <?php
 require '../functions.php';
+
+function getMonths()
+{
+    return $monthes = [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Отктябрь',
+        'Ноябрь',
+        'Декабрь'
+    ];
+}
 function getTotalPayments()
 {
     $sql = "SELECT SUM(amount) from `order` WHERE status = 'success'";
@@ -16,30 +34,26 @@ function getTotalRequests()
     return $stmt->fetch(PDO::FETCH_COLUMN);
 }
 
-function getTotalMonthlyPayments()
+function getEarningLastMonth()
 {
-    $sql = "SELECT month(added_at) mnth, SUM(amount) as total FROM `order` GROUP BY mnth
-           order by mnth desc limit 1";
-    $pdo = getPDO();
-    $stmt = $pdo->query($sql);
-    $arr = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $arr['total'];
-
-}
-
-function getMVMonth()
-{
-    $sql = "SELECT month(added_at)  mnth, SUM(amount) as total FROM `order` WHERE status ='success' GROUP BY mnth
-order by total desc limit 1;";
+    $sql = "SELECT month(added_at) mnth, sum(`amount`) total FROM `order` where status='success' group by mnth
+            order by mnth desc limit 1
+            ";
     $pdo = getPDO();
     $stmt = $pdo->query($sql);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $monthes = [
-        'january',
-        'february',
-        'march',
-        'april',
-        'may'
-    ];
-    return [$monthes[$row['mnth'] - 1], $row['total']];
+    $months = getMonths();
+    return [$months[$row['mnth'] - 1], $row['total']];
+}
+
+function getBestMonthEarnings()
+{
+    $sql = "SELECT month(added_at) mnth, sum(`amount`) total FROM `order` where status='success' group by mnth
+            order by total desc limit 1
+            ";
+    $pdo = getPDO();
+    $stmt = $pdo->query($sql);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $months = getMonths();
+    return [$months[$row['mnth'] - 1], $row['total']];
 }

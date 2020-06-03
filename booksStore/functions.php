@@ -15,42 +15,16 @@ function getPDO()
 
 function getBooks(array $ids = []): array
 {
-    $page = getPageNumber();
-    $offset = ($page - 1) * ITEMS_PER_PAGE;
-    $query = "SELECT b.id book_id, b.title, a.name author, g.name genre, b.cost FROM book b
-    left join author a ON a.id = b.author_id
-    left join genre g ON g.id = b.genre_id
-    %s
-    ORDER BY b.title LIMIT $offset,8
-    ";
-//    SELECT b.id book_id, b.title, a.name author, g.name genre FROM book b
-//    left join author a ON a.id = b.author_id
-//    left join genre g ON g.id = b.genre_id
-//    WHERE b.id IN (2,3,4,5,7)
-//    ORDER BY b.title LIMIT $offset,8
-    $where = '';
-    if (!empty($ids)) {
-        $where = sprintf('WHERE b.id IN (%s)', implode(',', $ids));
-    }
-    $query = sprintf($query, $where);
-    $pdo = getPDO();
-    $result = $pdo->query($query);
-    $result->setFetchMode(PDO::FETCH_ASSOC);
-    return $result->fetchAll();
+    require "classes/ProductService.php";
+    $class = new ProductService();
+    return $class->getProductList($ids);
 }
 
 function getBookById($bookId): array
 {
-    $query = "SELECT b.id book_id, b.title, a.name author, g.name genre, g.id genre_id, b.cost FROM book b
-    left join author a ON a.id = b.author_id
-    left join genre g ON g.id = b.genre_id
-    where b.id = ?
-    ";
-    $pdo = getPDO();
-    $result = $pdo->prepare($query);
-    $result->execute([$bookId]);
-    $result->setFetchMode(PDO::FETCH_ASSOC);
-    return $result->fetch();
+    require "classes/ProductService.php";
+    $class = new ProductService();
+    return $class->getBookById($bookId);
 }
 
 function getGenres(): array
