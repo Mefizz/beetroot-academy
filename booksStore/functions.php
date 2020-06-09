@@ -1,4 +1,5 @@
 <?php
+require 'autoload.php';
 
 define('ITEMS_PER_PAGE', 8);
 
@@ -15,7 +16,7 @@ function getPDO()
 
 function getBooks(array $ids = []): array
 {
-    require "classes/ProductService.php";
+    require_once "classes/ProductService.php";
     $class = new ProductService();
     return $class->getProductList($ids);
 }
@@ -233,6 +234,7 @@ function createOrder(): int
             $item['count']
         ]);
     }
+
     return $orderId;
 
 }
@@ -281,6 +283,26 @@ function updateOrder(string $data)
         'order_id' => $orderId,
         'amount' => $amount
     ]);
+    require_once '/vendor/autoload.php';
+
+// Create the Transport
+    $transport = (new Swift_SmtpTransport('smtp.example.org', 465, 'ssl'))
+        ->setUsername('andr.kopylets@gmail.com')
+        ->setPassword('Lemaign2013')
+    ;
+
+// Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+
+// Create a message
+    $message = (new Swift_Message('Заказ на сайте'))
+        ->setFrom(['bookstore.beetroot@gmail.com' => 'Shop'])
+        ->setTo(['receiver@domain.org', 'other@domain.org' => 'A name'])
+        ->setBody('Here is the message itself')
+    ;
+
+// Send the message
+    $result = $mailer->send($message);
     return [$orderId, $status];
 }
 

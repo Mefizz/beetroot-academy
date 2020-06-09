@@ -3,7 +3,7 @@ require 'admin_functions.php';
 require '../classes/GenreService.php';
 
 $genreService = new GenreService();
-$stats = $genreService->showAsPercents($genreService->getGenreStats());
+$stats = $genreService->showAsPercents($genreService->getGenresStats());
 ?>
 <!DOCTYPE html>
 <html lang="en">

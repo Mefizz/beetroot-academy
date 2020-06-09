@@ -20,8 +20,25 @@ class OrderService
                 ORDER BY ob.order_id DESC";
         $pdo = getPDO();
         $stmt = $pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArr = $stmt->fetchAll();
+        $colorizeFunc = function ($status, $color) {
+            if($status =='failed') {
+            return "<span style='color:$color'>$status</span>";
+        }
+        return $status;
+        };
+        $result = array_map(function ($order) use ($colorizeFunc) {
+        $order['status'] = $colorizeFunc($order['status'], 'green');
+        return $order;
+    }, $resultArr);
+        return $result;
     }
+
+//        foreach ($resultArr as $product) {
+//            $product['status'] = $colorizeFunc($product['status'], 'red');
+//        }
+//        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+//    }
 
     /**
      * @param $bookIds

@@ -1,18 +1,7 @@
 <?php
 require 'admin_functions.php';
-//require '../classes/ProductService.php';
-//require '../classes/GenreService.php';
-require  '../autoload.php';
-$productService =  new ProductService();
-if(empty($_GET['book_id'])) {
-    die('Bad URL');
-}
-if(!empty($_POST)) {
-$productService->update($_GET['book_id'], $_POST);
-}
-$book = $productService->getBookById($_GET['book_id']);
-$genreService = new GenreService();
-$genreList = $genreService->getGenresStats();
+require '../classes/ProductService.php';
+require '../classes/GenreService.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +40,7 @@ $genreList = $genreService->getGenresStats();
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="p-5">
-                                <a href="/admin/products.php" >Назад</a>
+                                <a href="/admin/goods.php" >Назад</a>
                                 <form class="user" method="post">
                                     <div class="form-group">
                                         <input type="text" name="title" value="<?=$book['title']?>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Название книги">
@@ -60,10 +49,10 @@ $genreList = $genreService->getGenresStats();
                                         <input type="text" name="cost" value="<?=$book['cost']?>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Стоимость">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="author" value="<?=$book['author']?>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Автор">
+                                        <input type="text" name="name" value="<?=$book['author']?>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Автор">
                                     </div>
                                     <div class="form-group">
-                                        <select id="inputState" name="genre" class="form-control">
+                                        <select id="inputState" class="form-control">
                                             <option selected>Выберите жанр...</option>
                                             <?php foreach ($genreList as $genre) : ?>
                                                 <option <?=$genre['name'] == $book['genre'] ? 'selected' : '' ?>><?=$genre['name']?></option>
@@ -74,7 +63,7 @@ $genreList = $genreService->getGenresStats();
                                         <span class="icon text-white-50">
                                           <i class="fas fa-check"></i>
                                         </span>
-                                        <span class="text">Сохранить</span>
+                                        <span class="text">Удалить</span>
                                     </button>
                                 </form>
                                 <hr>
