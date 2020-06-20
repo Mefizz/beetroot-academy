@@ -11,7 +11,7 @@ class GenreService
      *
      * @return array
      */
-    public function getGenresStats() : array
+    public function getGenreStats() : array
     {
         $sql = 'SELECT g.name, count(b.id) total from book b
             join genre g ON g.id = b.genre_id

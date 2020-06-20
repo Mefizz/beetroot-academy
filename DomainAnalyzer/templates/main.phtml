@@ -1,0 +1,13 @@
+<section class="terminal-container terminal-fixed-top">
+  <header class="terminal">
+    <span class="button red"></span>
+    <span class="button yellow"></span>
+    <span class="button green"></span>
+  </header>
+
+  <div class="terminal-home">
+    <?php foreach ($output as $line) : ?>
+        <p class="console"><?=$line ?></p>
+      <?php endforeach; ?>
+  </div>
+</section>

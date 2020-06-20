@@ -1,5 +1,5 @@
 <?php
-require 'functions.php';
+require 'functions.php' ;
 //if (!empty($_POST)) {
 $orderId = createOrder();
 //}
@@ -17,7 +17,7 @@ $orderId = createOrder();
     <title>Heroic Features - Start Bootstrap Template</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="css/heroic-features.css" rel="stylesheet">
@@ -27,12 +27,12 @@ $orderId = createOrder();
             padding-top: 0px;
             /*position:relative;*/
         }
-
-        /*footer {*/
-        /*    position: absolute;*/
-        /*    bottom: 0;*/
-        /*    width:100%;*/
-        /*}*/
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width:100%;
+        }
     </style>
 </head>
 
@@ -72,23 +72,19 @@ $items = getCartItems();
                             <div class="col-xs-2"><img class="img-responsive" src="http://placehold.it/100x70">
                             </div>
                             <div class="col-xs-4">
-                                <h4 class="product-name"><strong><?= $item['title'] ?></strong></h4><h4><small>Product
-                                        description</small></h4>
+                                <h4 class="product-name"><strong><?=$item['title'] ?></strong></h4><h4><small>Product description</small></h4>
                             </div>
                             <div class="col-xs-6">
                                 <div class="col-xs-6 text-right">
-                                    <h6><strong><?= $item['cost'] ?> <span class="text-muted">x</span></strong></h6>
+                                    <h6><strong><?=$item['cost'] ?> <span class="text-muted">x</span></strong></h6>
                                 </div>
                                 <div class="col-xs-4">
-                                    <input type="text" class="form-control input-sm" value="<?= $item['count'] ?>">
+                                    <input type="text" class="form-control input-sm" value="<?=$item['count'] ?>">
                                 </div>
                                 <div class="col-xs-2">
-                                    <form method="post" action="DeleteFromCart.php">
-                                        <button type="submit" class="btn btn-link btn-xs">
-                                            <input type="hidden" name="deleted_book_id" value="<?= $item['book_id'] ?>">
-                                            <span class="glyphicon glyphicon-trash"></span></a>
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn btn-link btn-xs">
+                                        <span class="glyphicon glyphicon-trash"> </span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -110,22 +106,20 @@ $items = getCartItems();
                 <div class="panel-footer">
                     <div class="row text-center">
                         <div class="col-xs-9">
-                            <h4 class="text-right">Total <strong>₴ <?= getOrderTotal() ?></strong></h4>
+                            <h4 class="text-right">Total <strong>₴ <?=getOrderTotal() ?></strong></h4>
                         </div>
                         <div class="col-xs-3">
                             <form method="POST" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
-                                <input type="hidden" name="data" value="<?= getData($orderId) ?>"/>
-                                <input type="hidden" name="signature" value="<?= getSignature($orderId) ?>"/>
+                                <input type="hidden" name="data" value="<?=getData($orderId) ?>" />
+                                <input type="hidden" name="signature" value="<?=getSignature($orderId) ?>" />
                                 <button style="border: none !important; display:inline-block !important;text-align: center !important;padding: 7px 20px !important;
 		color: #fff !important; font-size:16px !important; font-weight: 600 !important; font-family:OpenSans, sans-serif; cursor: pointer !important; border-radius: 2px !important;
-		background: rgb(122,183,43) !important;" onmouseover="this.style.opacity='0.5';"
-                                        onmouseout="this.style.opacity='1';">
+		background: rgb(122,183,43) !important;"onmouseover="this.style.opacity='0.5';" onmouseout="this.style.opacity='1';">
                                     <img src="https://static.liqpay.ua/buttons/logo-small.png" name="btn_text"
                                          style="margin-right: 7px !important; vertical-align: middle !important;"/>
-                                    <span style="vertical-align:middle; !important">Оплатить <?= getOrderTotal() ?> UAH</span>
+                                    <span style="vertical-align:middle; !important">Pay <?=getOrderTotal() ?> UAH</span>
                                 </button>
                             </form>
-
                         </div>
                     </div>
                 </div>
@@ -143,8 +137,8 @@ $items = getCartItems();
 </footer>
 
 <!-- Bootstrap core JavaScript -->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/jquery/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

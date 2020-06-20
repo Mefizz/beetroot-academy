@@ -1,3 +1,4 @@
+<!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
@@ -86,20 +87,25 @@
         </div>
     </li>
 
-    <!-- Nav Item - orders -->
+    <!-- Nav Item - Charts -->
     <li class="nav-item">
-        <a class="nav-link" href="orders.php">
+        <a class="nav-link" href="charts.html">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Заказы</span></a>
+            <span>Charts</span></a>
     </li>
 
-    <!-- Nav Item - products -->
+    <!-- Nav Item - Tables -->
+    <li class="nav-item">
+        <a class="nav-link" href="orders.php">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Заказы</span></a>
+    </li>
+    <!-- Nav Item - Tables -->
     <li class="nav-item">
         <a class="nav-link" href="products.php">
             <i class="fas fa-fw fa-table"></i>
             <span>Товары</span></a>
     </li>
-
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

@@ -1,9 +1,10 @@
 <?php
+
 require '../functions.php';
 
 function getMonths()
 {
-    return $monthes = [
+    return $months = [
         'Январь',
         'Февраль',
         'Март',
@@ -18,17 +19,18 @@ function getMonths()
         'Декабрь'
     ];
 }
-function getTotalPayments()
+
+function getPendingOrders()
 {
-    $sql = "SELECT SUM(amount) from `order` WHERE status = 'success'";
+    $sql = "SELECT count(*) FROM `order` WHERE status ='pending'";
     $pdo = getPDO();
     $stmt = $pdo->query($sql);
     return $stmt->fetch(PDO::FETCH_COLUMN);
 }
 
-function getTotalRequests()
+function getTotalEarnings()
 {
-    $sql = "SELECT COUNT(1) from `order` WHERE status = 'pending'";
+    $sql = "SELECT SUM(`amount`) FROM `order` WHERE status ='success'";
     $pdo = getPDO();
     $stmt = $pdo->query($sql);
     return $stmt->fetch(PDO::FETCH_COLUMN);
@@ -56,4 +58,26 @@ function getBestMonthEarnings()
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $months = getMonths();
     return [$months[$row['mnth'] - 1], $row['total']];
+}
+
+/**
+ * @param array $product
+ * @return string
+ */
+function getProductEditUrl(array $product)
+{
+    if(!empty($product['book_id'])) {
+        return "/admin/product/edit/{$product['book_id']}";
+    }
+}
+
+/**
+ * @param array $product
+ * @return string
+ */
+function getProductDeleteUrl(array $product)
+{
+    if(!empty($product['book_id'])) {
+        return "/admin/product/delete/{$product['book_id']}";
+    }
 }

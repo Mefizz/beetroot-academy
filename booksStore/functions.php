@@ -1,34 +1,45 @@
 <?php
-require 'autoload.php';
-
+require 'vendor/autoload.php';
 define('ITEMS_PER_PAGE', 8);
-
 define('PUB_KEY', 'sandbox_i7619656936');
 define('PRIVATE_KEY', 'sandbox_dgNRfsjIrPIBdaZKar7PwBf24qOf3y4MvAL386o8');
 
+/**
+ * @return PDO
+ */
 function getPDO()
 {
-    $pdo = new PDO("mysql:dbname=bookstore;host=127.0.0.1;charset=utf8mb4", 'root', '', [
+    $pdo = new PDO("mysql:dbname=bookstore;host=127.0.0.1;charset=utf8mb4", 'bookstore', '753753',[
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
     return $pdo;
 }
 
-function getBooks(array $ids = []): array
+/**
+ * @param array $ids
+ * @return array
+ */
+function getBooks(array $ids = []) : array
 {
-    require_once "classes/ProductService.php";
     $class = new ProductService();
-    return $class->getProductList($ids);
+    return $class->getProductsList($ids);
 }
 
-function getBookById($bookId): array
+/**
+ * @param $bookId
+ * @return array
+ */
+function getBookById($bookId) : array
 {
-    require "classes/ProductService.php";
+    require_once 'classes/ProductService.php';
     $class = new ProductService();
     return $class->getBookById($bookId);
 }
 
-function getGenres(): array
+/**
+ * @return array
+ */
+function getGenres() : array
 {
     $query = 'SELECT id, name FROM genre';
     $pdo = getPDO();
@@ -36,7 +47,11 @@ function getGenres(): array
     return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getComments($bookId): array
+/**
+ * @param $bookId
+ * @return array
+ */
+function getComments($bookId) : array
 {
     $query = 'SELECT * FROM comment WHERE book_id = ?';
     $pdo = getPDO();
@@ -45,6 +60,10 @@ function getComments($bookId): array
     return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 
+/**
+ * @param int $rating
+ * @return string
+ */
 function getStars(int $rating = 3)
 {
     $stars = '';
@@ -59,6 +78,10 @@ function getStars(int $rating = 3)
 }
 
 
+/**
+ * @param $comment
+ * @param $bookId
+ */
 function addComment($comment, $bookId)
 {
     $sql = "INSERT INTO `comment` (message, book_id) VALUES (:comment, :book)";
@@ -66,17 +89,24 @@ function addComment($comment, $bookId)
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         'comment' => $comment,
-        'book' => $bookId
+        'book'    => $bookId
     ]);
 }
 
-function formatCommentDate(string $date): string
+/**
+ * @param string $date
+ * @return string
+ */
+function formatCommentDate(string $date) : string
 {
     $time = strtotime($date);
     return date('n/j/y', $time);
 }
 
-function getPageNumber(): int
+/**
+ * @return int
+ */
+function getPageNumber() : int
 {
     $page = $_GET['page'] ?? 1;
     $total = getTotal();
@@ -89,6 +119,9 @@ function getPageNumber(): int
     return $page;
 }
 
+/**
+ * @return string
+ */
 function paginate()
 {
     $page = getPageNumber();
@@ -133,7 +166,10 @@ function paginate()
 PAGE;
 }
 
-function getTotal(): int
+/**
+ * @return int
+ */
+function getTotal() : int
 {
     static $count;
     if ($count === null) {
@@ -147,6 +183,10 @@ function getTotal(): int
     return $count;
 }
 
+/**
+ * @param $bookId
+ * @param int $count
+ */
 function addToCart($bookId, int $count = 1)
 {
     $cart = [];
@@ -161,7 +201,10 @@ function addToCart($bookId, int $count = 1)
     setcookie('cart', json_encode($cart), time() + 60 * 60 * 24 * 365);
 }
 
-function getItemsCount(): int
+/**
+ * @return int
+ */
+function getItemsCount() : int
 {
     $total = 0;
     if (!empty($_COOKIE['cart'])) {
@@ -169,12 +212,14 @@ function getItemsCount(): int
         foreach ($cart as $count) {
             $total += $count;
         }
-        //$total = array_sum($cart);
     }
     return $total;
 }
 
-function getCartItems(): array
+/**
+ * @return array
+ */
+function getCartItems() : array
 {
     $cart = json_decode($_COOKIE['cart'] ?? '', true);
     if (empty($cart)) {
@@ -184,11 +229,137 @@ function getCartItems(): array
     $ids = array_keys($cart);
     $books = getBooks($ids);
     foreach ($books as &$book) {
-        $book['count'] = $cart[$book['book_id']];
+        $book['count'] = $cart[  $book['book_id']    ];
     }
     return $books;
 }
 
+/**
+ * Create order with books
+ *
+ * @return int
+ */
+function createOrder() : int
+{
+    $items = getCartItems();
+    $sql = 'INSERT INTO `order` VALUES()';
+    $pdo = getPDO();
+    $pdo->query($sql);
+    $orderId = $pdo->lastInsertId();
+    $sql = 'INSERT INTO order_book (order_id, book_id, `count`) VALUES (?, ?, ?)';
+    $stmt = $pdo->prepare($sql);
+    foreach ($items as $item) {
+        $stmt->execute([
+            $orderId,
+            $item['book_id'],
+            $item['count']
+        ]);
+    }
+    return $orderId;
+}
+
+/**
+ * Get total cost of current order
+ *
+ * @return float
+ */
+function getOrderTotal() : float
+{
+    $total = 0.0;
+    $items = getCartItems();
+    foreach ($items as $item) {
+        $total += $item['cost'] * $item['count'];
+    }
+    return $total;
+}
+
+/**
+ * @param $orderId
+ *
+ * @return string
+ */
+function getData($orderId)
+{
+    $data = sprintf(
+        '{"result_url":"http://localhost:8080/callback.php", "public_key":"%s","version":"3","action":"pay","amount":"%.2f","currency":"UAH","description":"Покупка на сайте книг","order_id":"%s"}',
+        PUB_KEY,
+        getOrderTotal(),
+        $orderId
+    );
+
+    return base64_encode($data);
+}
+
+/**
+ * @param $orderId
+ *
+ * @return string
+ */
+function getSignature($orderId)
+{
+    return base64_encode( sha1(PRIVATE_KEY . getData($orderId) . PRIVATE_KEY, true) );
+}
+
+/**
+ * @param string $data
+ * @return array
+ */
+function updateOrder(string $data)
+{
+    $paymentData = json_decode(base64_decode($data), true);
+    $orderId = $paymentData['order_id'];
+    $amount  = $paymentData['amount'];
+    $status = $paymentData['status'];
+    if ($status == 'failure') {
+        $status = 'failed';
+    }
+    $sql = 'UPDATE `order` SET `status` = :status, amount = :amount WHERE order_id = :order_id';
+    $pdo = getPDO();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'status' => $status,
+        'order_id' => $orderId,
+        'amount' => $amount
+    ]);
+    $class = new Mailer();
+    $class->notifyOrder();
+    return [$orderId, $status];
+}
+
+/**
+ * @return string
+ */
+function getPaymentStatusMessage()
+{
+    if (!empty($_SESSION['order_id'])) {
+        $sql = 'SELECT * FROM `order` WHERE order_id = ?';
+        $pdo = getPDO();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$_SESSION['order_id']]);
+        $order = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($order['status'] == 'failed') {
+            $message = sprintf("При заказе произошла ошибка. Заказ на сумму %s не оплачен", $order['amount']);
+        } else {
+            $message = sprintf("Заказ на сумму %s успешно оплачен", $order['amount']);
+        }
+        $message .= "
+        <script>
+          $('#exampleModalCenter').modal('show')
+        </script>
+        ";
+        unset($_SESSION['order_id']);
+        return $message;
+    }
+}
+
+/**
+ * @param array $book
+ * @return string
+ */
+
+/**
+ * @param $deleteId
+ */
 function deleteFromCart($deleteId)
 {
     $cart = json_decode($_COOKIE['cart'], true);
@@ -201,139 +372,14 @@ function deleteFromCart($deleteId)
     }
 }
 
-function getOrderTotal()
+function getBookUrl(array $book)
 {
-    $cost = 0;
-    if (!empty($_COOKIE['cart'])) {
-        $books = getCartItems();
-        foreach ($books as $book) {
-            $cost += $book['cost'] * $book['count'];
-        }
-    }
-    return $cost;
+    return "/page/{$book['url']}.html";
 }
-
-/**
- * Create order with books
- *
- * @return int
- */
-function createOrder(): int
+function getBookByUrl($url)
 {
-    $items = getCartItems();
-    $sql = 'INSERT INTO `order` VALUES()';
-    $pdo = getPDO();
-    $pdo->query($sql);
-    $orderId = $pdo->lastinsertId();
-    $sql = "INSERT INTO order_book (order_id, book_id, `count`) VALUES (?, ?,? )";
-    $stmt = $pdo->prepare($sql);
-    foreach ($items as $item) {
-        $stmt->execute([
-            $orderId,
-            $item['book_id'],
-            $item['count']
-        ]);
-    }
 
-    return $orderId;
+    $class = new ProductService();
+    return $class->getBookByUrl($url);
 
 }
-
-/**
- * summ total cost from $count of $books
- * @return float
- */
-//function countMoneys() : float
-//{
-//    $total = 0.0;
-//    $items = getCartItems();
-//
-//}
-
-function getData($orderId)
-{
-    $data = sprintf(
-        '{"result_url":"http://localhost:8080/callback.php", "public_key":"%s","version":"3","action":"pay","amount":"%.2f","currency":"UAH","description":"Покупка книг на сайте","order_id":"%s"}',
-        PUB_KEY,
-        getOrderTotal(),
-        $orderId
-    );
-    return base64_encode($data);
-}
-
-function getSignature($orderId)
-{
-    return base64_encode(sha1(PRIVATE_KEY . getData($orderId) . PRIVATE_KEY, true));
-}
-
-function updateOrder(string $data)
-{
-    $paymentData = json_decode(base64_decode($data), true);
-    $orderId = $paymentData['order_id'];
-    $amount = $paymentData['amount'];
-    $status = $paymentData['status'];
-    if ($status == 'failure') {
-        $status = 'failed';
-    }
-    $sql = 'UPDATE `order` SET `status` = :status, amount = :amount WHERE order_id =:order_id';
-    $pdo = getPDO();
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'status' => $status,
-        'order_id' => $orderId,
-        'amount' => $amount
-    ]);
-    require_once '/vendor/autoload.php';
-
-// Create the Transport
-    $transport = (new Swift_SmtpTransport('smtp.example.org', 465, 'ssl'))
-        ->setUsername('andr.kopylets@gmail.com')
-        ->setPassword('Lemaign2013')
-    ;
-
-// Create the Mailer using your created Transport
-    $mailer = new Swift_Mailer($transport);
-
-// Create a message
-    $message = (new Swift_Message('Заказ на сайте'))
-        ->setFrom(['bookstore.beetroot@gmail.com' => 'Shop'])
-        ->setTo(['receiver@domain.org', 'other@domain.org' => 'A name'])
-        ->setBody('Here is the message itself')
-    ;
-
-// Send the message
-    $result = $mailer->send($message);
-    return [$orderId, $status];
-}
-
-function getPaymentStatusMessage()
-{
-    if (!empty($_SESSION['order_id'])) {
-        $sql = 'SELECT * FROM `order` WHERE order_id= ?';
-        $pdo = getPDO();
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$_SESSION['order_id']]);
-        $order = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($order['status'] == 'failed') {
-            $message = sprintf("При заказе произошла ошибка. Заказ на сумму %s не оплачен", $order['amount']);
-
-            $message .= "    
-        <script>
-            $('#exampleModalCenter').modal('show')
-        </script>
-            ";
-
-        } else {
-            $message = sprintf("Все норм, заказ оплачен");
-
-            $message .= "
-        <script>
-            $('#exampleModalCenter').modal('show')
-        </script>
-            ";
-            unset($_SESSION['order_id']);
-            return $message;
-        }
-    }
-}
-

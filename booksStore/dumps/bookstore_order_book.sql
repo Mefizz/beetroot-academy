@@ -1,0 +1,71 @@
+create table order_book
+(
+    order_id int      not null,
+    book_id  int      not null,
+    count    smallint null
+);
+
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (2, 2, 2);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (2, 10, 4);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (3, 3, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (3, 59, 2);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (4, 80, 5);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (5, 2, 7);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (5, 47, 2);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (5, 80, 5);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (6, 24, 23);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (6, 29, 4);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (6, 45, 2);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (7, 2, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (8, 2, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (9, 2, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (10, 59, 5);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (10, 90, 3);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (11, 47, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (12, 10, 3);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (12, 39, 4);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (13, 39, 3);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (13, 47, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (13, 96, 4);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (14, 39, 3);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (14, 47, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (14, 96, 4);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (15, 39, 3);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (15, 47, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (15, 96, 4);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (16, 39, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (17, 39, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (18, 59, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (19, 59, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (20, 59, 3);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (21, 59, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (22, 59, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (23, 59, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (24, 10, 3);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (25, 10, 3);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (26, 96, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (27, 96, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (28, 96, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (29, 96, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (30, 79, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (31, 2, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (32, 79, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (33, 79, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (479, 2, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (480, 2, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (481, 79, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (483, 96, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (485, 96, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (487, 79, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (488, 79, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (489, 79, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (490, 79, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (491, 2, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (491, 79, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (492, 79, 1);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (494, 96, 4);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (495, 96, 4);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (505, 2, 15);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (506, 2, 15);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (508, 47, 3);
+INSERT INTO bookstore.order_book (order_id, book_id, count) VALUES (508, 90, 4);

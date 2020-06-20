@@ -1,9 +1,10 @@
 <?php
 require 'admin_functions.php';
 require '../classes/GenreService.php';
-
 $genreService = new GenreService();
-$stats = $genreService->showAsPercents($genreService->getGenresStats());
+$stats = $genreService->showAsPercents($genreService->getGenreStats());
+
+//printf("Привет %s, Как дела? Сегодня погода %s. А курс доллара %.2f", "Настя", "Супер", 26.456456); exit();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +34,7 @@ $stats = $genreService->showAsPercents($genreService->getGenresStats());
   <div id="wrapper">
 
     <!-- Sidebar -->
-<?php require 'sidebar.php'; ?>
+    <?php require 'sidebar.php' ?>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -244,7 +245,7 @@ $stats = $genreService->showAsPercents($genreService->getGenresStats());
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">₴<?php getEarningLastMonth()?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -260,8 +261,8 @@ $stats = $genreService->showAsPercents($genreService->getGenresStats());
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">₴<?=getTotalPayments()?> </div>
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Total)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?=getTotalEarnings() ?> грн</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -273,15 +274,15 @@ $stats = $genreService->showAsPercents($genreService->getGenresStats());
 
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
-                <?php list($month, $total) = getBestMonthEarnings()?>
+                <?php list($month, $total) = getBestMonthEarnings() ?>
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1"><?=$month?></div>
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1"><?=$month ?></div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?=$total?></div>
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?=$total ?></div>
                         </div>
                         <div class="col">
                           <div class="progress progress-sm mr-2">
@@ -304,8 +305,8 @@ $stats = $genreService->showAsPercents($genreService->getGenresStats());
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">PendingRequests</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?=getTotalRequests()?></div>
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?=getPendingOrders() ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -400,13 +401,12 @@ $stats = $genreService->showAsPercents($genreService->getGenresStats());
                   <h6 class="m-0 font-weight-bold text-primary">Жанры</h6>
                 </div>
                 <div class="card-body">
-                    <?php foreach ($stats as $stat) : ?>
-                  <h4 class="small font-weight-bold"><?=$stat['name'] ?><span class="float-right"><?=$stat['percent']?>%</span></h4>
+                  <?php foreach ($stats as $stat) : ?>
+                  <h4 class="small font-weight-bold"><?=$stat['name'] ?> <span class="float-right"><?=$stat['percent'] ?>%</span></h4>
                   <div class="progress mb-4">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width:<?=$stat['percent']?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: <?=$stat['percent'] ?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
-                    <?php endforeach; ?>
-                  </div>
+                    <?php endforeach ?>
                 </div>
               </div>
 

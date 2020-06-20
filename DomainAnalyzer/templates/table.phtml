@@ -1,0 +1,28 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($output as $line) : ?>
+    <?php $values = explode(":", $line); ?>
+    <tr>
+    <td><?=$values[0] ?? 'unknown' ?></td>
+    <td><?=$values[1] ?? 'unknown'?></td>
+    </tr>
+    <?php endforeach; ?>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        </tr>
+    <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        </tr>
+    <tr>
+        <th scope="row">3</th>
+        <td>Larry</td>
+        </tr>
+    </tbody>
+</table>

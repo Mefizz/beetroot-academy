@@ -1,0 +1,11 @@
+RewriteEngine on
+AddType application/x-httpd-php .php
+
+ErrorDocument 404 http://localhost:8080/errors/404.html
+
+RewriteRule ^page/(\d+)/?$ page.php?book_id=$1
+RewriteRule ^admin/product/edit/(\d+)$ admin/product_edit.php?book_id=$1
+
+RewriteRule ^page/(\d+/)?(.*\.(css|js))$ /$2
+
+RewriteRule ^page/(.+)\.html$ page.php?url=$1
