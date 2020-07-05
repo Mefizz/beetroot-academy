@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  php:
+    ports:
+      - "8082:80"
+    build:
+      context: .
+      dockerfile: ./environment/Dockerfile
+    volumes:
+#    image: php:7.3-apache
+      - .:/var/www/html
+
