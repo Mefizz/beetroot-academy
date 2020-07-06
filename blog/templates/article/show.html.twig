@@ -41,6 +41,7 @@
             </div>
 
             {{ include('article/sub/comment.html.twig') }}
+            {% if is_granted("ROLE_ADMIN") %}
             {{ include('comment/_form.html.twig') }}
         </div>
     </article>

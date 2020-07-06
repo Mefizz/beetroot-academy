@@ -22,11 +22,13 @@
                 <div class="fb-like" data-href="{{ facebook_domain }}"
                      data-width="" data-layout="button" data-action="like" data-size="large" data-share="false"></div>
                 </p>
+                {% if is_granted("ROLE_ADMIN") %}
                 <form name="comment" method="post" action="{{ path('add_reply', {'id' : article.id, 'commentId': comment.id}) }}">
 
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Ответить</label>
                         <textarea id="comment_body" name="body" required="required" class="form-control"></textarea>
+                        <input type="hidden" name="token" value="{{ csrf_token('comment-token') }}"/>
                     </div>
 
                     <button class="btn btn-primary">Ответить</button>
