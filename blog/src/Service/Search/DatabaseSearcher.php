@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service\Search;
 
+
 use App\Entity\Article;
 use Doctrine\ORM\EntityManagerInterface;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * Class Searcher
@@ -35,16 +37,14 @@ class DatabaseSearcher implements SearcherInterface
     public function searchByQuery(string $query) : array
     {
         $qb = $this->em->createQueryBuilder();
-        $result = $qb->from(Article::class, 'a')
+        $result = $qb->from(Article::class,'a')
             ->select('a')
-            ->where(
-                $qb->expr()->like(
-                    'a.body',
-                    $qb->expr()->literal("%$query%")
-                )
+            ->where($qb->expr()->like(
+                'a.body',
+                $qb->expr()->literal("%$query%")
             )
-            ->getQuery();
+        )
+        ->getQuery();
         return $result->getResult();
     }
-
 }

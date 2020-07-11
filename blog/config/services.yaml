@@ -5,6 +5,12 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     app.facebook_domain: '%env(FACEBOOK_DOMAIN)%'
+    image_directory: '%kernel.project_dir%/public/uploads/images'
+    app.domain: '%end(PROJECT_DOMAIN)%'
+
+    _defaults:
+        bind:
+            $appDomain: '%aoo.domain%'
 
 services:
     # default configuration for services in *this* file

@@ -1,9 +1,5 @@
 FROM php:7.3-apache
 
-#RUN usermod -u ${USER_ID} www-data && groupmod -g ${GROUP_ID} www-data
-#USER "${USER_ID}:${GROUP_ID}"
-WORKDIR /var/www/html
-
 RUN apt update \
 	&& apt install -y libicu-dev \
 		git \
@@ -22,6 +18,10 @@ RUN pecl install xdebug-2.8.1 \
 	&& docker-php-ext-enable xdebug \
 	&& a2enmod rewrite \
 	&& docker-php-ext-install pdo_mysql intl zip opcache
+
+RUN apt install -y cron vim && \
+    service cron start
+
 
 COPY ./environment/php.ini $PHP_INI_DIR/php.ini
 

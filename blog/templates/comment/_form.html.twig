@@ -1,4 +1,5 @@
-{{ form_start(form,{"action": path('comment_new', {'id': article.id})}) }}
+{#{% if article.id is defined %}#}
+{{ form_start(form,{"action": path('comment_new', {'id' : article.id, 'userId': app.user.id})}) }}
     <div class="my-custom-class-for-errors">
         {{ form_errors(form) }}
     </div>
@@ -10,3 +11,10 @@
 
     <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+
+{#{% else %}#}
+{#{{ form_start(form) }}#}
+{#    {{ form_widget(form) }}#}
+{#<button class="btn">{{ button_label|default('Save') }}</button>#}
+{#{{ form_end(form) }}#}
+{#{% endif %}#}

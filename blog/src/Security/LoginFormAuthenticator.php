@@ -49,6 +49,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     {
         $credentials = [
             'email' => $request->request->get('email'),
+//            'username' => $request->request->get('username'),
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
@@ -96,10 +97,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             return new RedirectResponse($targetPath);
         }
 
+        // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
+//        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        return new RedirectResponse($this->urlGenerator->generate('article_index'));
     }
 
     protected function getLoginUrl()
     {
-        return new RedirectResponse($this->urlGenerator->generate('article_index'));
+        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 }

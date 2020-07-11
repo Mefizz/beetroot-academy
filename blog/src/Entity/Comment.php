@@ -55,6 +55,17 @@ class Comment
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $name;
+
+//    public  function __toString()
+//    {
+//        return $this->name;
+//    }
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -166,6 +177,18 @@ class Comment
                 $comment->setReplyTo(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?User
+    {
+        return $this->name;
+    }
+
+    public function setName(?User $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

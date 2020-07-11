@@ -55,6 +55,11 @@ class Article
      * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="articles")
      */
     private $tags;
+    /**
+     * @var
+     */
+    private $user;
+
 
 
     public function __construct()
@@ -65,6 +70,10 @@ class Article
         $this->tags = new ArrayCollection();
     }
 
+//    public function __toString()
+//    {
+//        return $this->title;
+//    }
 
     public function getId(): ?int
     {
@@ -74,6 +83,11 @@ class Article
     public function getTitle(): ?string
     {
         return $this->title;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
     }
 
     public function setTitle(string $title): self
@@ -98,6 +112,8 @@ class Article
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
+//        $date = $this->createdAt;
+//        return $date->format('\o\n m/d/Y \a\t H:i:s');
     }
 
     public function setCreatedAt(\DateTimeInterface $createdAt): self

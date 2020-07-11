@@ -4,11 +4,11 @@
 
 {% block body %}
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v7.0&appId=819459864922023&autoLogAppEvents=1" nonce="1Euinhxn"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v7.0" nonce="QIQJdG33"></script>
     {% include 'article/sub/header.html.twig' %}
 
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+    <header class="masthead" style="background-image: url('../../public/img/post-bg.jpg')">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
@@ -16,9 +16,13 @@
                     <div class="post-heading">
                         <h1>{{ article.title }}</h1>
                         <h2 class="subheading">Problems look mighty small from 150 miles up</h2>
-                        <span class="meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on August 24, 2019</span>
+                        <span class="meta">
+                            <p class="post-meta">Posted by
+                                <a href="#">Start Bootstrap</a>
+                               on {{ article.createdAt|date('m/d/Y') }}
+                               at {{ article.createdAt|date('H:i:s') }}
+                            </p>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -31,24 +35,30 @@
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto">
                     {{ article.body }}
-                    <p>Placeholder text by
-                        <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by
-                        <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>.</p>
-                    {% for tag in article.tags %}
-                        <a href="{{ path('tag_show', {'id': tag.id}) }}" class="badge {{ tag.color }}">#{{ tag.title }}</a>
-                    {% endfor %}
+                    <p>
+                        <a href="{{ path('article_index') }}">back to list</a>
+                        <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
+                    </p>
+                    <p>
+                        {% for tag in article.tags%}
+                            <a style="padding: 8px !important" href="{{ path('tag_article_show', {'id' : tag.id}) }}" class="{{ tag.color }}">#{{ tag.title }}</a>
+                        {% endfor %}
+                    </p>
+{#                    <p>Placeholder text by#}
+{#                        <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by#}
+{#                        <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>.</p>#}
                 </div>
             </div>
-
             {{ include('article/sub/comment.html.twig') }}
-            {% if is_granted("ROLE_ADMIN") %}
+            {% if is_granted('ROLE_USER') %}
             {{ include('comment/_form.html.twig') }}
+            {% endif %}
         </div>
     </article>
 
     <hr>
-
+    {{ include('article/_delete_form.html.twig') }}
     {% include 'article/sub/footer.html.twig' %}
 
-    {{ include('article/_delete_form.html.twig') }}
+
 {% endblock %}

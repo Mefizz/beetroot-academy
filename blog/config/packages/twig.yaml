@@ -4,3 +4,5 @@ twig:
         # the value is the service's id
         navigation: '@App\Service\Page\Navigation'
         facebook_domain: '%app.facebook_domain%'
+        app_domain: '%app.domain%'
+

@@ -5,7 +5,7 @@
 {% block body %}
     {% include 'article/sub/header.html.twig' %}
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('img/home-bg.jpg')">
+    <header class="masthead" style="background-image: url('../../public/img/post-bg.jpg')">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
@@ -32,9 +32,15 @@
                             {{ article.body }}
                         </h3>
                     </a>
+                    <p>
+                        <a href="{{ path('article_index') }}">back to list</a>
+                        <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
+                    </p>
                     <p class="post-meta">Posted by
                         <a href="#">Start Bootstrap</a>
-                        on September 24, 2019</p>
+                        on {{ article.createdAt|date('m/d/Y') }}
+                        at {{ article.createdAt|date('H:i:s') }}
+                    </p>
                 </div>
                 <hr>
                 {% endfor %}

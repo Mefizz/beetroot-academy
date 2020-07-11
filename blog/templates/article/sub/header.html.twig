@@ -14,9 +14,18 @@
                 </li>
                 {% endfor %}
             </ul>
+            {% include 'article/sub/search.html.twig'%}
         </div>
-        {% include 'article/sub/search.html.twig' %}
-
     </div>
-    <a class="btn btn-primary" href="#" role="button">{{ app.user.email }}</a>
+    {% if is_granted('ROLE_USER') %}
+        <img src="{{ asset('uploads/images/' ~ app.user.image) }}" class="round" style=" border-radius: 30px ;" alt="user_avatar" width="60" height="60">
+        <p style="padding-left: 8px;">{{ app.user.name }}
+
+        ( {{ app.user.email }} )</p>
+        <a class="float-left" style="padding-left: 30px; padding-right: 30px" href="{{ path('app_logout') }}"><strong>Exit</strong></a>
+    {% else %}
+        <a class="float-left" style="padding-left: 30px;" href="{{ path('app_login') }}"><strong>Login</strong></a>
+        <a class="float-left" style="padding-left: 30px;" href="{{ path('app_register') }}"><strong>Register</strong></a>
+
+    {% endif %}
 </nav>
