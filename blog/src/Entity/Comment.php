@@ -59,12 +59,7 @@ class Comment
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $name;
-
-//    public  function __toString()
-//    {
-//        return $this->name;
-//    }
+    private $user;
 
     public function __construct()
     {
@@ -181,14 +176,14 @@ class Comment
         return $this;
     }
 
-    public function getName(): ?User
+    public function getUser(): ?User
     {
-        return $this->name;
+        return $this->user;
     }
 
-    public function setName(?User $name): self
+    public function setUser(?User $user): self
     {
-        $this->name = $name;
+        $this->user = $user;
 
         return $this;
     }
