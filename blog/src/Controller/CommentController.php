@@ -71,7 +71,7 @@ class CommentController extends AbstractController
             $entityManager->flush();
             $commentsLogger->info($comment->getBody(),[
                 'user' =>$this->getUser()
-        ]
+
             ]);
 
             return $this->redirectToRoute('article_show', ['id' => $article->getId()]);
