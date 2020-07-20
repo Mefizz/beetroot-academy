@@ -1,0 +1,87 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Hello User!{% endblock %}
+
+{% block body %}
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {% include 'admin/parts/sidebar.html.twig' %}
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                {% include 'admin/parts/topbar.html.twig' %}
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+                    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Имя пользователя</th>
+                                        <th>Роли</th>
+                                        <th>Адрес</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tfoot>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Имя пользователя</th>
+                                        <th>Роли</th>
+                                        <th>Адрес</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    {% for user in users %}
+                                        <tr>
+                                            <td>{{ user.id }}</td>
+                                            <td>{{ user.name }}</td>
+                                            <td>
+                                                {% for role in user.getAllRoles %}
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"
+                                                        disabled="disabled" {{ role in user.roles ? 'checked' : '' }}>
+                                                        <label class="form-check-label" for="inlineCheckbox1">{{ role }}</label>
+                                                    </div>
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ user.email }}</td>
+                                            <td>
+                                                <a href="{{ path('user_edit', {'id': user.id}) }}">Редактировать</a>
+{#                                                {% include 'admin/article/_delete_form.html.twig' %}#}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="btn-floating btn-lg btn-default" href="{{ path('article_new') }}"><i class="fas fa-bolt"></i></a>
+        </div>
+
+    </div>
+{% endblock %}

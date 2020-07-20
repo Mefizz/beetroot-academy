@@ -24,6 +24,7 @@ class ArticleController extends AbstractController
      */
     public function index(ArticleRepository $articleRepository): Response
     {
+//        throw new \Exception('something broken');
         return $this->render('article/index.html.twig', [
             'articles' => $articleRepository->findAll()
         ]);
@@ -39,8 +40,6 @@ class ArticleController extends AbstractController
         ]);
     }
 
-
-
     /**
      * @Route("/article/{id}", name="article_show", methods={"GET"})
      */
@@ -52,6 +51,4 @@ class ArticleController extends AbstractController
             'form'     => $form->createView()
         ]);
     }
-
-
 }

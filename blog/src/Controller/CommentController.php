@@ -6,6 +6,8 @@ use App\Entity\Article;
 use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
+use Psr\Log\LoggerInterface;
+use Psr\Log\Test\LoggerInterfaceTest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,7 +57,7 @@ class CommentController extends AbstractController
     /**
      * @Route("/new/{id}", name="comment_new", methods={"POST"})
      */
-    public function new(Request $request, Article $article): Response
+    public function new(Request $request, Article $article, LoggerInterface $commentsLogger): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -67,6 +69,10 @@ class CommentController extends AbstractController
             $comment->setUser($this->getUser());
             $entityManager->persist($comment);
             $entityManager->flush();
+            $commentsLogger->info($comment->getBody(),[
+                'user' =>$this->getUser()
+        ]
+            ]);
 
             return $this->redirectToRoute('article_show', ['id' => $article->getId()]);
         }

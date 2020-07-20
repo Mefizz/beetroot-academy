@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +14,7 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('body')
+            ->add('body', CKEditorType::class)
             ->add('category')
             ->add('tags')
         ;

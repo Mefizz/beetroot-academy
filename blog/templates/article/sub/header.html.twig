@@ -14,18 +14,22 @@
                 </li>
                 {% endfor %}
             </ul>
-            {% include 'article/sub/search.html.twig'%}
         </div>
+        {% include 'article/sub/search.html.twig' %}
     </div>
     {% if is_granted('ROLE_USER') %}
-        <img src="{{ asset('uploads/images/' ~ app.user.image) }}" class="round" style=" border-radius: 30px ;" alt="user_avatar" width="60" height="60">
-        <p style="padding-left: 8px;">{{ app.user.name }}
-
-        ( {{ app.user.email }} )</p>
-        <a class="float-left" style="padding-left: 30px; padding-right: 30px" href="{{ path('app_logout') }}"><strong>Exit</strong></a>
-    {% else %}
-        <a class="float-left" style="padding-left: 30px;" href="{{ path('app_login') }}"><strong>Login</strong></a>
-        <a class="float-left" style="padding-left: 30px;" href="{{ path('app_register') }}"><strong>Register</strong></a>
-
+    <div class="dropdown show">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ app.user.name }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            {% if is_granted('ROLE_ADMIN') %}
+                    <a class="dropdown-item" href="{{ path('admin_index') }}">В Админку</a>
+            {% endif %}
+            <a class="dropdown-item" href="{{ path('profile_edit') }}">Личный кабинет</a>
+            <a class="dropdown-item" href="{{ path('app_logout') }}">Выйти</a>
+        </div>
+    </div>
     {% endif %}
 </nav>
+

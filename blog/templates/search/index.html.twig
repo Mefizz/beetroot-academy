@@ -5,7 +5,7 @@
 {% block body %}
     {% include 'article/sub/header.html.twig' %}
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('../../public/img/post-bg.jpg')">
+    <header class="masthead" style="background-image: url('img/home-bg.jpg')">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
@@ -22,6 +22,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
+                {% if articles is not empty %}
                 {% for article in articles %}
                     <div class="post-preview">
                         <a href="{{ path('article_show', {'id': article.id}) }}">
@@ -32,22 +33,15 @@
                                 {{ article.body }}
                             </h3>
                         </a>
-                        <p>
-                            <a href="{{ path('article_index') }}">back to list</a>
-                            <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
-                        </p>
                         <p class="post-meta">Posted by
                             <a href="#">Start Bootstrap</a>
-                            on {{ article.createdAt|date('m/d/Y') }}
-                            at {{ article.createdAt|date('H:i:s') }}
-                        </p>
+                            on September 24, 2019</p>
                     </div>
                     <hr>
                 {% endfor %}
-                <!-- Pager -->
-                <div class="clearfix">
-                    <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-                </div>
+                {% else %}
+                    По вашему запросу ничего не найдено
+                {% endif %}
             </div>
         </div>
     </div>

@@ -16,18 +16,16 @@ class TagType extends AbstractType
             ->add('title')
             ->add('color', ChoiceType::class, [
                 'choices'  => [
-                    'Blue' => "badge badge-primary",
-                    'Gray' => "badge badge-secondary",
-                    'Green' => "badge badge-success",
-                    'Red' => "badge badge-danger",
-                    'Yellow' => "badge badge-warning",
-                    'Info' => "badge badge-info",
-                    'Light' => "badge badge-light",
-                    'Dark' => "badge badge-dark",
+                    'Синий' => 'badge-primary',
+                    'Серый' => 'badge-secondary',
+                    'Зеленій' => 'badge-success',
+                    'Красный' => 'badge-danger',
+                    'Желтый' => 'badge-warning',
+                    'Голубой' => 'badge-info',
+                    'Белый' => 'badge-light',
+                    'Черный' => 'badge-dark',
                 ],
             ]);
-//            ->add('articles')
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

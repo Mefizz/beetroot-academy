@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -46,61 +45,11 @@ class User implements UserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="string", options={"default": "standart_avatar.png"})
-     */
-    private $image;
-
-//    public function __toString()
-//    {
-//        return $this->image;
-//    }
-//
-//    public function __construct()
-//    {
-//        $this->image = "standart_avatar.png";
-//
-//    }
-
-    /**
-     * @return string
-     */
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-//    public function __construct()
-//    {
-//        $this->image= 'standard_avatar.png';
-//    }
-
-    /**
-     * @param $image
-     * @return $this
-     */
-    public function setImage($image) : self
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return (string) $this->username;
-    }
-
-    /**
      * @param string $username
      */
-    public function setName(string $username): self
+    public function setUsername(string $username): void
     {
         $this->username = $username;
-
-        return $this;
     }
 
     /**
@@ -109,14 +58,14 @@ class User implements UserInterface
     private $isVerified = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="name")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user")
      */
     private $comments;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": 1})
      */
-    private $isSubscribed;
+    private $isSubscribed = 1;
 
     public function __construct()
     {
@@ -141,6 +90,32 @@ class User implements UserInterface
     }
 
     /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName(string $name) : self
+    {
+        $this->username = $name;
+        return $this;
+    }
+
+    public function getAllRoles() : array
+    {
+        return [
+            'ROLE_USER',
+            'ROLE_ADMIN',
+        ];
+    }
+
+    /**
      * A visual identifier that represents this user.
      *
      * @see UserInterface
@@ -150,21 +125,6 @@ class User implements UserInterface
         return (string) $this->email;
     }
 
-//    /**
-//     * @see UserInterface
-//     */
-//    public function getName(): string
-//    {
-//        return (string) $this->username;
-//    }
-//
-//    public function setName(string $username): self
-//    {
-//        $this->username = $username;
-//
-//        return $this;
-//    }
-
     /**
      * @see UserInterface
      */
@@ -173,7 +133,6 @@ class User implements UserInterface
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-        $roles[] = 'ROLE_ADMIN';
 
         return array_unique($roles);
     }
@@ -229,58 +188,47 @@ class User implements UserInterface
         return $this;
     }
 
-//    public function setUsername(string $username): ?string
-//    {
-//        $this->username = $username;
-//
-//        return $this;
-//    }
-//
-//    public function getUsername(): string
-//    {
-//        return (string) $this->username;
-//    }
-
-
-/**
- * @return Collection|Comment[]
- */
-public function getComments(): Collection
-{
-    return $this->comments;
-}
-
-public function addComment(Comment $comment): self
-{
-    if (!$this->comments->contains($comment)) {
-        $this->comments[] = $comment;
-        $comment->setName($this);
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
     }
 
-    return $this;
-}
-
-public function removeComment(Comment $comment): self
-{
-    if ($this->comments->contains($comment)) {
-        $this->comments->removeElement($comment);
-        // set the owning side to null (unless already changed)
-        if ($comment->getName() === $this) {
-            $comment->setName(null);
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setUser($this);
         }
+
+        return $this;
     }
 
-    return $this;
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIsSubscribed(): ?bool
+    {
+        return $this->isSubscribed;
+    }
+
+    public function setIsSubscribed(bool $isSubscribed): self
+    {
+        $this->isSubscribed = $isSubscribed;
+
+        return $this;
+    }
+
 }
-
-public function getIsSubscribed(): ?bool
-{
-    return $this->isSubscribed;
-}
-
-public function setIsSubscribed(bool $isSubscribed): self
-{
-    $this->isSubscribed = $isSubscribed;
-
-    return $this;
-}}

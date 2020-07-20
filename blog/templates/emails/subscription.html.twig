@@ -98,11 +98,16 @@ Licensed under MIT
                                 <tr><td align="center" bgcolor="#fbfcfd">
                                         <font face="Arial, Helvetica, sans-serif" size="4" color="#57697e" style="font-size: 15px;">
                                             <table width="90%" border="0" cellspacing="0" cellpadding="0">
-                                                <tr><td>
-                                                    Ваш комментарий <cite>"{{ reply.replyTo.body }}"</cite>
-                                                    Получил ответ:
-                                                        <cite>{{ reply.body }}</cite>
-                                                    </td></tr>
+                                                <tr>
+                                                    <td>Вы могли пропустить такие статьи:</td>
+                                                </tr>
+
+                                                {%  for article in articles %}
+                                                    <tr><td>
+                                                            <a href="{{ app_domain ~ path('article_show', {"id": article.id}) }}">{{ article.title }}</a>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
                                                 <tr><td align="center">
                                                         <div style="line-height: 24px;">
                                                             <a href="#" target="_blank" class="btn btn-danger block-center">
@@ -116,7 +121,7 @@ Licensed under MIT
                                         </font>
                                     </td></tr>
                                 <!--content 1 END-->
-                                <a href="{{ page_url }}">Перейти на сайт</a>
+                                <a href="{{ app_domain ~ unsubscribe_url }}">Отписаться</a>
 
                                 <!--footer -->
                                 <tr><td class="iage_footer" align="center" bgcolor="#ffffff">
